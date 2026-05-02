@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Himalayan Thangka Gallery — Sacred Art of the Himalayas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold:      #d4951a;
+    --gold-lt:   #f0c050;
+    --gold-pale: #fdf3dc;
+    --ember:     #b84a0c;
+    --ember-dk:  #7c2d0a;
+    --ink:       #180800;
+    --parchment: #faf5ec;
+    --parchment2:#f3ead8;
+    --cream:     #fffdf7;
+    --muted:     #7a5230;
+    --border:    #e2c98a;
+    --shadow:    rgba(100,40,0,.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--parchment); color: var(--ink); font-family: 'EB Garamond', serif; overflow-x: hidden; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--parchment2); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+  /* ── UTILITY ── */
+  .cinzel { font-family: 'Cinzel', serif; }
+  .section-eyebrow { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .28em; text-transform: uppercase; color: var(--ember); margin-bottom: .6rem; }
+  .divider { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 1rem 0; }
+  .divider-line { width: 50px; height: 1px; background: var(--gold); }
+  .divider-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .9rem 2.5rem;
+    background: rgba(24,8,0,.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(212,149,26,.25);
+  }
+  .nav-logo { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 500; color: var(--gold-lt); letter-spacing: .12em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .nav-logo .wheel { font-size: 1rem; animation: spin 14s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-family: 'Cinzel', serif; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: #d4b896; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--gold-lt); }
+  .nav-cta { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--gold); border: none; padding: .5rem 1.3rem; cursor: pointer; border-radius: 2px; transition: background .2s; text-decoration: none; }
+  .nav-cta:hover { background: var(--gold-lt); }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .nav-hamburger span { width: 22px; height: 1.5px; background: var(--gold-lt); display: block; transition: .3s; }
+  @media(max-width:768px) {
+    nav { padding: .9rem 1.25rem; }
+    .nav-links, .nav-cta { display: none; }
+    .nav-hamburger { display: flex; }
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background:
+      linear-gradient(160deg, rgba(24,8,0,.72) 0%, rgba(124,45,10,.55) 45%, rgba(180,100,10,.35) 75%, rgba(212,149,26,.2) 100%),
+      radial-gradient(ellipse at 70% 50%, #4a1e08 0%, #1a0800 60%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 7rem 1.5rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-mandala {
+    position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
+    width: 520px; height: 520px; opacity: .06; pointer-events: none;
+  }
+  .hero-mandala2 {
+    position: absolute; left: -100px; bottom: -80px;
+    width: 380px; height: 380px; opacity: .04; pointer-events: none;
+  }
+  .hero-badge { display: inline-block; font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(212,149,26,.4); padding: .35rem 1.1rem; border-radius: 2px; margin-bottom: 1.5rem; }
+  .hero-title { font-family: 'Cinzel', serif; font-size: clamp(2.4rem, 7vw, 5.5rem); font-weight: 500; color: #fff; line-height: 1.1; margin-bottom: 1rem; }
+  .hero-title em { color: var(--gold-lt); font-style: normal; }
+  .hero-sub { font-size: clamp(1rem, 2.2vw, 1.35rem); color: #d4b896; font-style: italic; max-width: 520px; line-height: 1.75; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn-primary { font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: .85rem 2.2rem; text-decoration: none; border-radius: 2px; transition: background .2s; font-weight: 500; }
+  .btn-primary:hover { background: var(--gold-lt); }
+  .btn-outline { font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; background: transparent; color: var(--gold-lt); border: 1px solid rgba(212,149,26,.5); padding: .85rem 2.2rem; text-decoration: none; border-radius: 2px; transition: border-color .2s, color .2s; }
+  .btn-outline:hover { border-color: var(--gold-lt); color: #fff; }
+  .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .hero-scroll span { font-family: 'Cinzel', serif; font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(212,149,26,.6); }
+  .hero-scroll-bar { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(212,149,26,.6), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+  @keyframes scrollPulse { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
+
+  /* ── STATS BAND ── */
+  .stats-band {
+    background: linear-gradient(90deg, #2a0e00, #4a1e00, #2a0e00);
+    border-top: 1px solid rgba(212,149,26,.3);
+    border-bottom: 1px solid rgba(212,149,26,.3);
+    padding: 2rem 1.5rem;
+  }
+  .stats-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; text-align: center; }
+  @media(max-width:600px) { .stats-inner { grid-template-columns: repeat(2,1fr); } }
+  .stat-num { font-family: 'Cinzel', serif; font-size: 1.9rem; font-weight: 500; color: var(--gold-lt); line-height: 1; }
+  .stat-label { font-size: .82rem; color: #b47a44; margin-top: .3rem; letter-spacing: .04em; }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 6rem 1.5rem;
+    background:
+      linear-gradient(180deg, var(--parchment) 0%, var(--parchment2) 50%, var(--parchment) 100%);
+  }
+  .about-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  @media(max-width:768px) { .about-inner { grid-template-columns: 1fr; gap: 2.5rem; } }
+  .about-img-wrap { position: relative; }
+  .about-img-frame {
+    aspect-ratio: 3/4; background:
+      linear-gradient(135deg, #3d1800 0%, #7c3a10 40%, #b46020 70%, #d4951a 100%);
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+  }
+  .about-img-frame svg { width: 80px; height: 80px; opacity: .2; }
+  .about-img-badge {
+    position: absolute; bottom: -16px; right: -16px;
+    background: var(--gold); color: var(--ink);
+    font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .12em;
+    padding: .7rem 1.1rem; border-radius: 2px; text-transform: uppercase;
+  }
+  .about-text h2 { font-family: 'Cinzel', serif; font-size: 2.4rem; font-weight: 500; color: var(--ink); line-height: 1.2; margin-bottom: 1.25rem; }
+  .about-text p { font-size: 1.05rem; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; }
+  .about-text p em { color: var(--ember); font-style: italic; }
+
+  /* ── FEATURED ── */
+  #featured {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(180deg, #fdf8ee 0%, #f5e8cc 50%, #fdf8ee 100%);
+  }
+  .section-head { text-align: center; margin-bottom: 3.5rem; }
+  .section-head h2 { font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 500; color: var(--ink); margin-bottom: .5rem; }
+  .section-head p { font-size: 1.05rem; font-style: italic; color: var(--muted); max-width: 460px; margin: .75rem auto 0; }
+  .artwork-grid { max-width: 1100px; margin: 0 auto 3rem; display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+  @media(max-width:900px) { .artwork-grid { grid-template-columns: repeat(2,1fr); } }
+  @media(max-width:560px) { .artwork-grid { grid-template-columns: 1fr; } }
+  .artwork-card { background: var(--cream); border: 1px solid var(--border); border-radius: 3px; overflow: hidden; transition: transform .3s, box-shadow .3s; cursor: pointer; }
+  .artwork-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px var(--shadow); }
+  .artwork-card-img {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #3d1800 0%, #7c3a10 50%, #c47a30 100%);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .artwork-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+  .artwork-card:hover .artwork-card-img img { transform: scale(1.07); }
+  .artwork-placeholder { opacity: .18; }
+  .artwork-card-body { padding: 1.25rem 1.4rem 1.5rem; }
+  .artwork-tag { font-family: 'Cinzel', serif; font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ember); margin-bottom: .5rem; }
+  .artwork-name { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 500; color: var(--ink); margin-bottom: .45rem; line-height: 1.3; }
+  .artwork-desc { font-size: .9rem; color: var(--muted); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .artwork-footer { margin-top: 1rem; padding-top: .85rem; border-top: 1px solid #ebd9b4; display: flex; align-items: center; justify-content: space-between; }
+  .artwork-medium { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .1em; color: #b47a44; }
+  .artwork-arrow { color: var(--gold); transition: transform .2s; }
+  .artwork-card:hover .artwork-arrow { transform: translateX(4px); }
+  .featured-cta { text-align: center; }
+
+  /* ── PROCESS ── */
+  #process {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(160deg, #1a0800 0%, #3d1a00 40%, #5a2800 70%, #3d1a00 100%);
+  }
+  #process .section-head h2 { color: var(--gold-lt); }
+  #process .section-head p { color: #c9a060; }
+  #process .section-eyebrow { color: var(--gold); }
+  #process .divider-line, #process .divider-diamond { background: rgba(212,149,26,.4); }
+  .process-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+  @media(max-width:800px) { .process-grid { grid-template-columns: repeat(2,1fr); } }
+  @media(max-width:480px) { .process-grid { grid-template-columns: 1fr; } }
+  .process-step { text-align: center; padding: 2rem 1.25rem; border: 1px solid rgba(212,149,26,.18); border-radius: 3px; background: rgba(255,255,255,.03); transition: border-color .3s; }
+  .process-step:hover { border-color: rgba(212,149,26,.45); }
+  .process-num { font-family: 'Cinzel', serif; font-size: 2.5rem; font-weight: 400; color: rgba(212,149,26,.2); line-height: 1; margin-bottom: .75rem; }
+  .process-icon { margin-bottom: .75rem; }
+  .process-icon svg { width: 32px; height: 32px; stroke: var(--gold); fill: none; }
+  .process-step h3 { font-family: 'Cinzel', serif; font-size: .95rem; font-weight: 500; color: var(--gold-lt); margin-bottom: .6rem; letter-spacing: .06em; }
+  .process-step p { font-size: .88rem; color: #b47a44; line-height: 1.7; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(180deg, var(--parchment) 0%, #f0e6cf 50%, var(--parchment) 100%);
+  }
+  .testimonial-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 1.75rem; }
+  @media(max-width:800px) { .testimonial-grid { grid-template-columns: 1fr; max-width: 500px; } }
+  .testimonial-card { background: var(--cream); border: 1px solid var(--border); border-radius: 3px; padding: 2rem; }
+  .testimonial-quote { font-size: .9rem; color: #8b5c2a; margin-bottom: .3rem; letter-spacing: .1em; }
+  .testimonial-body { font-size: 1rem; line-height: 1.75; color: var(--muted); font-style: italic; margin-bottom: 1.25rem; }
+  .testimonial-author { font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .12em; color: var(--ember); text-transform: uppercase; }
+  .testimonial-origin { font-size: .8rem; color: #b47a44; margin-top: .2rem; }
+  .stars { color: var(--gold); font-size: .85rem; margin-bottom: .75rem; letter-spacing: 2px; }
+
+  /* ── NEWSLETTER ── */
+  #newsletter {
+    padding: 5rem 1.5rem;
+    background: linear-gradient(135deg, #2a0e00 0%, #5a2500 35%, #8b4510 60%, #d4951a 100%);
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .nl-bg-ornament { position: absolute; right: -60px; top: -60px; opacity: .06; pointer-events: none; }
+  #newsletter h2 { font-family: 'Cinzel', serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 500; color: #fff; margin-bottom: .75rem; }
+  #newsletter p { font-size: 1.05rem; color: #f0d8b0; font-style: italic; max-width: 440px; margin: 0 auto 2rem; line-height: 1.7; }
+  .nl-form { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; max-width: 480px; margin: 0 auto; }
+  .nl-input { flex: 1; min-width: 220px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); border-radius: 2px; padding: .85rem 1.25rem; color: #fff; font-family: 'EB Garamond', serif; font-size: 1rem; outline: none; }
+  .nl-input::placeholder { color: rgba(255,255,255,.5); }
+  .nl-input:focus { border-color: var(--gold-lt); }
+  .nl-btn { font-family: 'Cinzel', serif; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; background: var(--gold); color: var(--ink); border: none; padding: .85rem 1.75rem; cursor: pointer; border-radius: 2px; font-weight: 500; transition: background .2s; white-space: nowrap; }
+  .nl-btn:hover { background: var(--gold-lt); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: linear-gradient(160deg, #130500 0%, #2a0e00 50%, #130500 100%);
+    color: #f0d9b5;
+    font-family: 'EB Garamond', serif;
+    position: relative; overflow: hidden;
+  }
+  .footer-shimmer { height: 4px; background: linear-gradient(90deg, #7c2d12, #d97706, #f59e0b, #d97706, #7c2d12); background-size: 200%; animation: shimmer 4s linear infinite; }
+  @keyframes shimmer { 0% { background-position: 0; } 100% { background-position: 200%; } }
+  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 3.5rem 1.5rem 1.5rem; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3rem; }
+  @media(max-width:768px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.75rem; } }
+  @media(max-width:440px) { .footer-grid { grid-template-columns: 1fr; } }
+  .footer-brand-name { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 500; color: var(--gold); letter-spacing: .1em; margin-bottom: .35rem; }
+  .footer-brand-sub { font-size: .88rem; font-style: italic; color: #b45309; margin-bottom: .9rem; }
+  .footer-desc { font-size: .9rem; line-height: 1.75; color: #c9a96e; max-width: 230px; }
+  .footer-col-title { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); border-bottom: 1px solid #3d1a00; padding-bottom: .5rem; margin-bottom: 1rem; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: .55rem; }
+  .footer-links a { font-size: .9rem; color: #c9a96e; text-decoration: none; transition: color .2s, padding-left .2s; display: inline-block; }
+  .footer-links a:hover { color: var(--gold-lt); padding-left: 5px; }
+  .footer-social { display: flex; gap: .65rem; flex-wrap: wrap; }
+  .social-btn { display: inline-flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; padding: .35rem .85rem; border: 1px solid #7c3600; border-radius: 2px; color: #c9a96e; text-decoration: none; transition: border-color .2s, color .2s; }
+  .social-btn:hover { border-color: var(--gold); color: var(--gold-lt); }
+  .social-btn svg { width: 13px; height: 13px; fill: currentColor; }
+  .footer-bottom { border-top: 1px solid #2e1200; padding-top: 1.5rem; display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; justify-content: space-between; }
+  .footer-copy { font-size: .78rem; color: #7a4a1e; letter-spacing: .04em; }
+  .footer-tagline { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .12em; color: #7a4a1e; display: flex; align-items: center; gap: 6px; }
+  .footer-tagline svg { width: 18px; height: 18px; animation: spin 14s linear infinite; opacity: .45; }
+
+  /* ── CAROUSEL ── */
+  .carousel-wrapper { overflow: hidden; }
+  .testimonial-carousel { display: flex; gap: 1.75rem; animation: slide 60s linear infinite; }
+  @keyframes slide { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-100% / 2)); } }
+  .testimonial-carousel:hover { animation-play-state: paused; }
+  .testimonial-card { flex: 0 0 calc(33.333% - 1.17rem); min-width: 300px; }
+  @media(max-width:1000px) { .testimonial-card { flex: 0 0 calc(50% - 0.88rem); } }
+  @media(max-width:600px) { .testimonial-card { flex: 0 0 100%; } }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="wheel">☸</span>
+    Himalayan Thangka Art Gallery
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#featured">Gallery</a></li>
+    <li><a href="#process">Our Craft</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#newsletter">Contact</a></li>
+  </ul>
+  <a href="#featured" class="nav-cta">Explore Art</a>
+  <div class="nav-hamburger" onclick="this.classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero">
+  <!-- Background mandalas -->
+  <svg class="hero-mandala" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#f59e0b" fill="none" stroke-width="0.6">
+      <circle cx="150" cy="150" r="140"/><circle cx="150" cy="150" r="110"/><circle cx="150" cy="150" r="80"/><circle cx="150" cy="150" r="50"/><circle cx="150" cy="150" r="20"/>
+      <line x1="150" y1="10" x2="150" y2="290"/><line x1="10" y1="150" x2="290" y2="150"/>
+      <line x1="51" y1="51" x2="249" y2="249"/><line x1="249" y1="51" x2="51" y2="249"/>
+      <polygon points="150,20 165,100 245,100 185,148 205,228 150,180 95,228 115,148 55,100 135,100"/>
+      <polygon points="150,60 160,115 215,115 172,147 188,200 150,167 112,200 128,147 85,115 140,115"/>
+    </g>
+  </svg>
+  <svg class="hero-mandala2" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#f59e0b" fill="none" stroke-width="0.6">
+      <circle cx="150" cy="150" r="140"/><circle cx="150" cy="150" r="100"/><circle cx="150" cy="150" r="60"/>
+      <line x1="150" y1="10" x2="150" y2="290"/><line x1="10" y1="150" x2="290" y2="150"/>
+      <line x1="51" y1="51" x2="249" y2="249"/><line x1="249" y1="51" x2="51" y2="249"/>
+    </g>
+  </svg>
+
+  <div class="hero-badge">Himalayan Sacred Art</div>
+  <h1 class="hero-title">
+    Sacred Art of<br/><em>the Himalayas</em>
+  </h1>
+  <p class="hero-sub">Hand-painted Thangkas from Nepal — each a devotional masterwork centuries in the making.</p>
+  <div class="hero-actions">
+    <a href="#featured" class="btn-primary">Explore Gallery</a>
+    <a href="#about" class="btn-outline">Our Story</a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-bar"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ══════════════ STATS ══════════════ -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div><div class="stat-num">500+</div><div class="stat-label">Original Artworks</div></div>
+    <div><div class="stat-num">30+</div><div class="stat-label">Master Artists</div></div>
+    <div><div class="stat-num">18</div><div class="stat-label">Years of Curation</div></div>
+    <div><div class="stat-num">Verified</div><div class="stat-label">Art Studio</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ ABOUT ══════════════ -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-img-wrap">
+      <div class="about-img-frame">
+        <svg class="artwork-placeholder" viewBox="0 0 80 80" fill="none" stroke="#d4951a" stroke-width="1.5" width="80" height="80">
+          <rect x="4" y="4" width="72" height="72" rx="2"/>
+          <circle cx="28" cy="28" r="8"/>
+          <path d="M4 55l18-18 14 14 10-10 20 20"/>
+        </svg>
+      </div>
+      <div class="about-img-badge">Est. 2026 · Kathmandu, Nepal</div>
+    </div>
+    <div class="about-text">
+      <p class="section-eyebrow">Our Heritage</p>
+      <h2>Where Devotion<br/>Becomes Art</h2>
+      <div class="divider" style="justify-content:flex-start;"><div class="divider-line"></div><div class="divider-diamond"></div></div>
+      <p>Himalayan Thangka Art Gallery was founded in the ancient alleys of Kathmandu with a single purpose: to bring the <em>living tradition</em> of Himalayan sacred painting to collectors and seekers worldwide.</p>
+      <p>Every piece in our collection is hand-painted using centuries-old techniques — <em>natural mineral pigments</em>, pure gold leaf, and hand-woven cotton canvas — by artists who carry lineages of devotional craft.</p>
+      <p>We believe art made in meditation carries a different energy. Each thangka is more than an object — it is a <em>window into awakened mind</em>.</p>
+      <a href="#featured" class="btn-primary" style="margin-top:.5rem;display:inline-block;">View Collection</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FEATURED ARTWORKS ══════════════ -->
+<section id="featured">
+  <div class="section-head">
+    <p class="section-eyebrow">Curated Selection</p>
+    <h2>Featured Artworks</h2>
+    <div class="divider"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+    <p>Each piece hand-painted by master artists of the Himalayan tradition</p>
+  </div>
+  <div class="artwork-grid">
+    <!-- Card 1 -->
+    <div class="artwork-card">
+      <div class="artwork-card-img">
+        <svg class="artwork-placeholder" viewBox="0 0 80 80" fill="none" stroke="#d4951a" stroke-width="1.5" width="70" height="70"><rect x="4" y="4" width="72" height="72" rx="2"/><circle cx="28" cy="28" r="8"/><path d="M4 55l18-18 14 14 10-10 20 20"/></svg>
+      </div>
+      <div class="artwork-card-body">
+        <p class="artwork-tag">Compassion</p>
+        <h3 class="artwork-name">Chenrezig Mandala</h3>
+        <p class="artwork-desc">The four-armed bodhisattva of compassion rendered in luminous mineral pigments on hand-woven canvas.</p>
+        <div class="artwork-footer">
+          <span class="artwork-medium">Mineral pigment · Gold leaf</span>
+          <span class="artwork-arrow">→</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="artwork-card">
+      <div class="artwork-card-img">
+        <svg class="artwork-placeholder" viewBox="0 0 80 80" fill="none" stroke="#d4951a" stroke-width="1.5" width="70" height="70"><rect x="4" y="4" width="72" height="72" rx="2"/><circle cx="40" cy="30" r="10"/><path d="M10 70c0-16.57 13.43-30 30-30s30 13.43 30 30"/></svg>
+      </div>
+      <div class="artwork-card-body">
+        <p class="artwork-tag">Wisdom</p>
+        <h3 class="artwork-name">White Tara</h3>
+        <p class="artwork-desc">Goddess of longevity and healing, adorned with seven eyes of compassionate sight and pure gold ornaments.</p>
+        <div class="artwork-footer">
+          <span class="artwork-medium">Natural dye · 24k gold</span>
+          <span class="artwork-arrow">→</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="artwork-card">
+      <div class="artwork-card-img">
+        <svg class="artwork-placeholder" viewBox="0 0 80 80" fill="none" stroke="#d4951a" stroke-width="1.5" width="70" height="70"><polygon points="40,8 52,30 76,34 58,52 62,76 40,64 18,76 22,52 4,34 28,30"/></svg>
+      </div>
+      <div class="artwork-card-body">
+        <p class="artwork-tag">Protection</p>
+        <h3 class="artwork-name">Mahakala Guardian</h3>
+        <p class="artwork-desc">The wrathful protector whose fierce emanation destroys all obstacles on the path to enlightenment.</p>
+        <div class="artwork-footer">
+          <span class="artwork-medium">Hand-painted · Cotton canvas</span>
+          <span class="artwork-arrow">→</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 4 -->
+    <div class="artwork-card">
+      <div class="artwork-card-img">
+        <svg class="artwork-placeholder" viewBox="0 0 80 80" fill="none" stroke="#d4951a" stroke-width="1.5" width="70" height="70"><circle cx="40" cy="40" r="36"/><circle cx="40" cy="40" r="24"/><circle cx="40" cy="40" r="12"/><line x1="40" y1="4" x2="40" y2="76"/><line x1="4" y1="40" x2="76" y2="40"/></svg>
+      </div>
+      <div class="artwork-card-body">
+        <p class="artwork-tag">Enlightenment</p>
+        <h3 class="artwork-name">Shakyamuni Buddha</h3>
+        <p class="artwork-desc">The historical Buddha in earth-touching posture, painted during meditation retreat by a Tibetan master.</p>
+        <div class="artwork-footer">
+          <span class="artwork-medium">Mineral pigment · Silk mount</span>
+          <span class="artwork-arrow">→</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 5 -->
+    <div class="artwork-card">
+      <div class="artwork-card-img">
+        <svg class="artwork-placeholder" viewBox="0 0 80 80" fill="none" stroke="#d4951a" stroke-width="1.5" width="70" height="70"><path d="M40 8 C20 20 8 34 8 50 C8 66 22 76 40 76 C58 76 72 66 72 50 C72 34 60 20 40 8Z"/><circle cx="40" cy="44" r="10"/></svg>
+      </div>
+      <div class="artwork-card-body">
+        <p class="artwork-tag">Abundance</p>
+        <h3 class="artwork-name">Green Tara</h3>
+        <p class="artwork-desc">The active mother of liberation, swift to respond, depicted in vibrant green with lotus and offering gestures.</p>
+        <div class="artwork-footer">
+          <span class="artwork-medium">Stone pigment · Brocade border</span>
+          <span class="artwork-arrow">→</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 6 -->
+    <div class="artwork-card">
+      <div class="artwork-card-img">
+        <svg class="artwork-placeholder" viewBox="0 0 80 80" fill="none" stroke="#d4951a" stroke-width="1.5" width="70" height="70"><rect x="16" y="4" width="48" height="56" rx="2"/><rect x="24" y="64" width="32" height="12" rx="2"/><line x1="24" y1="20" x2="56" y2="20"/><line x1="24" y1="32" x2="56" y2="32"/><line x1="24" y1="44" x2="44" y2="44"/></svg>
+      </div>
+      <div class="artwork-card-body">
+        <p class="artwork-tag">Longevity</p>
+        <h3 class="artwork-name">Amitayus — Life Buddha</h3>
+        <p class="artwork-desc">The Buddha of Boundless Life holds a vase of immortality nectar, glowing in deep red and gold tones.</p>
+        <div class="artwork-footer">
+          <span class="artwork-medium">24k gold detail · Mineral pigment</span>
+          <span class="artwork-arrow">→</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="featured-cta">
+    <a href="gallery.html" class="btn-primary" style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.16em;">View Full Gallery →</a>
+  </div>
+</section>
+
+<!-- ══════════════ PROCESS ══════════════ -->
+<section id="process">
+  <div class="section-head">
+    <p class="section-eyebrow" style="color:var(--gold);">The Sacred Craft</p>
+    <h2 style="color:var(--gold-lt);">How a Thangka is Born</h2>
+    <div class="divider"><div class="divider-line" style="background:rgba(212,149,26,.4)"></div><div class="divider-diamond" style="background:rgba(212,149,26,.4)"></div><div class="divider-line" style="background:rgba(212,149,26,.4)"></div></div>
+    <p style="color:#c9a060;font-style:italic;">A single painting can take months of meditative work</p>
+  </div>
+  <div class="process-grid">
+    <div class="process-step">
+      <div class="process-num">01</div>
+      <div class="process-icon">
+        <svg viewBox="0 0 32 32"><rect x="4" y="4" width="24" height="24" rx="2" stroke-width="1.5"/><path d="M4 14h24M14 4v24" stroke-width="1.5"/></svg>
+      </div>
+      <h3>Canvas Preparation</h3>
+      <p>Cotton cloth is stretched, coated with chalk and hide glue, then polished to a smooth ivory surface.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">02</div>
+      <div class="process-icon">
+        <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" stroke-width="1.5"/><circle cx="16" cy="16" r="4" stroke-width="1.5"/><line x1="16" y1="4" x2="16" y2="28" stroke-width="1.5"/><line x1="4" y1="16" x2="28" y2="16" stroke-width="1.5"/></svg>
+      </div>
+      <h3>Sacred Geometry</h3>
+      <p>The composition is laid out using traditional grid systems — proportions passed down through generations.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">03</div>
+      <div class="process-icon">
+        <svg viewBox="0 0 32 32"><path d="M6 26L16 6l10 20" stroke-width="1.5"/><path d="M9 20h14" stroke-width="1.5"/></svg>
+      </div>
+      <h3>Mineral Pigments</h3>
+      <p>Natural stones — lapis lazuli, malachite, cinnabar — are ground and bound with ox-bile to create vivid, lasting colors.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">04</div>
+      <div class="process-icon">
+        <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" stroke-width="1.5"/><path d="M16 10v6l4 4" stroke-width="1.5"/></svg>
+      </div>
+      <h3>Gold & Consecration</h3>
+      <p>Pure gold leaf is applied with a burnishing stone. The finished work is blessed in a ritual ceremony.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TESTIMONIALS ══════════════ -->
+<section id="testimonials">
+  <div class="section-head">
+    <p class="section-eyebrow">Collectors' Words</p>
+    <h2>What People Say</h2>
+    <div class="divider"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+  </div>
+  <div class="carousel-wrapper">
+    <div class="testimonial-carousel" id="testimonialCarousel">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">I have collected art for 30 years and never felt such a presence radiating from a painting. My White Tara Thangka transforms the entire room.</p>
+        <div class="testimonial-author">Margaret L.</div>
+        <div class="testimonial-origin">London, United Kingdom</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">The craftsmanship is extraordinary — every detail tells a story. The packaging and documentation of the artist's lineage made it feel truly sacred.</p>
+        <div class="testimonial-author">Kenji M.</div>
+        <div class="testimonial-origin">Kyoto, Japan</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">Our sangha commissioned a large Chenrezig and the result moved everyone to tears. The artists truly paint from the heart, not just the hand.</p>
+        <div class="testimonial-author">Sonia R.</div>
+        <div class="testimonial-origin">New York, USA</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">The piece arrived beautifully packaged and the care taken was evident. I felt a deep spiritual connection the moment I opened it. Simply transcendent.</p>
+        <div class="testimonial-author">David W.</div>
+        <div class="testimonial-origin">Sydney, Australia</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">A gift that truly gives. Each time I meditate before my Chenrezig, I discover new layers of meaning in the brushwork. Remarkable investment.</p>
+        <div class="testimonial-author">Priya S.</div>
+        <div class="testimonial-origin">New Delhi, India</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">The artist's dedication is palpable in every stroke. This is not mass production—it's a living tradition passed down through centuries.</p>
+        <div class="testimonial-author">Elena M.</div>
+        <div class="testimonial-origin">Barcelona, Spain</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">My Mahakala Guardian watches over my home with fierce compassion. The energy in the room shifted immediately after hanging it.</p>
+        <div class="testimonial-author">James T.</div>
+        <div class="testimonial-origin">Toronto, Canada</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">I purchased the Green Tara and my practice deepened. The colors are so vibrant—they seem to glow from within. Worth every penny.</p>
+        <div class="testimonial-author">Lucia R.</div>
+        <div class="testimonial-origin">Mexico City, Mexico</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">The documentation accompanying each piece is scholarly and reverent. You're not just buying art, you're supporting a sacred lineage.</p>
+        <div class="testimonial-author">Robert H.</div>
+        <div class="testimonial-origin">Boston, USA</div>
+      </div>
+      <!-- Duplicates for infinite scroll -->
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">I have collected art for 30 years and never felt such a presence radiating from a painting. My White Tara Thangka transforms the entire room.</p>
+        <div class="testimonial-author">Margaret L.</div>
+        <div class="testimonial-origin">London, United Kingdom</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-body">The craftsmanship is extraordinary — every detail tells a story. The packaging and documentation of the artist's lineage made it feel truly sacred.</p>
+        <div class="testimonial-author">Kenji M.</div>
+        <div class="testimonial-origin">Kyoto, Japan</div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align: center; margin-top: 3rem;">
+    <a href="reviews.html" class="btn-primary" style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.16em;">View All Reviews</a>
+  </div>
+</section>
+
+<!-- ══════════════ NEWSLETTER ══════════════ -->
+<section id="newsletter">
+  <svg class="nl-bg-ornament" viewBox="0 0 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#fff" fill="none" stroke-width="0.8">
+      <circle cx="150" cy="150" r="140"/><circle cx="150" cy="150" r="100"/><circle cx="150" cy="150" r="60"/>
+      <line x1="150" y1="10" x2="150" y2="290"/><line x1="10" y1="150" x2="290" y2="150"/>
+      <line x1="51" y1="51" x2="249" y2="249"/><line x1="249" y1="51" x2="51" y2="249"/>
+    </g>
+  </svg>
+  <p class="section-eyebrow" style="color:rgba(255,255,255,.6);text-align:center;">Stay Connected</p>
+  <h2>Receive Sacred Insights</h2>
+  <p>New arrivals, artist stories, and the symbolism behind Himalayan art — delivered with care to your inbox.</p>
+  <form class="nl-form" onsubmit="return false;">
+    <input class="nl-input" type="email" placeholder="Your email address"/>
+    <button class="nl-btn" type="submit">Subscribe</button>
+  </form>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-shimmer"></div>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div style="font-size:1.5rem;margin-bottom:.4rem;">☸</div>
+        <div class="footer-brand-name">Himalayan Thangka Art Gallery</div>
+        <div class="footer-brand-sub">Sacred Art of the Himalayas</div>
+        <p class="footer-desc">Celebrating centuries of devotional artistry from Nepal, Tibet & Bhutan — connecting collectors with living tradition.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Explore</p>
+        <ul class="footer-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#featured">Gallery</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#">Collections</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Connect</p>
+        <ul class="footer-links">
+          <li><a href="#newsletter">Get in Touch</a></li>
+          <li><a href="mailto:info@thangka.com">info@thangka.com</a></li>
+          <!-- <li><a href="#">Commission a Piece</a></li> -->
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Follow</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07"/></svg>
+            Facebook
+          </a>
+          <a href="#" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Thangka Gallery. All rights reserved.</p>
+      <div class="footer-tagline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+          <line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/>
+          <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/>
+          <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"/><line x1="9.17" y1="14.83" x2="4.93" y2="19.07"/>
+        </svg>
+        Crafted with devotion · Kathmandu
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

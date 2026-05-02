@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gallery — Thangka Gallery | Sacred Art of the Himalayas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold:       #d4951a;
+    --gold-lt:    #f0c050;
+    --gold-pale:  #fdf3dc;
+    --ember:      #b84a0c;
+    --ember-dk:   #7c2d0a;
+    --ink:        #180800;
+    --parchment:  #faf5ec;
+    --parchment2: #f3ead8;
+    --cream:      #fffdf7;
+    --muted:      #7a5230;
+    --border:     #e2c98a;
+    --shadow:     rgba(100,40,0,.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--parchment); color: var(--ink); font-family: 'EB Garamond', serif; overflow-x: hidden; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--parchment2); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .9rem 2.5rem;
+    background: rgba(24,8,0,.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(212,149,26,.25);
+  }
+  .nav-logo { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 500; color: var(--gold-lt); letter-spacing: .12em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .nav-wheel { animation: spin 14s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-family: 'Cinzel', serif; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: #d4b896; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold-lt); }
+  .nav-cta { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--gold); border: none; padding: .5rem 1.3rem; cursor: pointer; border-radius: 2px; text-decoration: none; transition: background .2s; }
+  .nav-cta:hover { background: var(--gold-lt); }
+  @media(max-width:768px) {
+    nav { padding: .9rem 1.25rem; }
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+  }
+
+  /* ── HERO BANNER ── */
+  .gallery-hero {
+    min-height: 42vh;
+    background:
+      linear-gradient(160deg, rgba(24,8,0,.80) 0%, rgba(100,38,8,.60) 50%, rgba(180,100,10,.30) 100%),
+      radial-gradient(ellipse at 60% 50%, #4a1e08 0%, #1a0800 70%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 8rem 1.5rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-mandala-bg {
+    position: absolute; right: -60px; top: 50%; transform: translateY(-50%);
+    width: 420px; height: 420px; opacity: .05; pointer-events: none;
+  }
+  .gallery-hero-eyebrow { font-family: 'Cinzel', serif; font-size: .66rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
+  .gallery-hero h1 { font-family: 'Cinzel', serif; font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 500; color: #fff; line-height: 1.1; margin-bottom: .9rem; }
+  .gallery-hero h1 em { color: var(--gold-lt); font-style: normal; }
+  .gallery-hero p { font-size: 1.1rem; color: #d4b896; font-style: italic; max-width: 480px; line-height: 1.75; }
+  .hero-divider { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 1rem 0; }
+  .hero-divider-line { width: 50px; height: 1px; background: rgba(212,149,26,.5); }
+  .hero-divider-diamond { width: 6px; height: 6px; background: rgba(212,149,26,.5); transform: rotate(45deg); }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    position: sticky; top: 60px; z-index: 100;
+    background: rgba(250,245,236,.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+  }
+  .filter-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; padding: .85rem 0;
+  }
+  .filter-cats { display: flex; gap: .4rem; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
+    padding: .4rem 1rem; border-radius: 2px; cursor: pointer; transition: all .2s;
+    border: 1px solid var(--border); background: transparent; color: var(--muted);
+  }
+  .filter-btn:hover { border-color: var(--gold); color: var(--ember); }
+  .filter-btn.active { background: var(--ink); border-color: var(--ink); color: var(--gold-lt); }
+  .filter-right { display: flex; align-items: center; gap: .75rem; }
+  .filter-count { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .1em; color: var(--muted); white-space: nowrap; }
+  .sort-select {
+    font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .1em;
+    border: 1px solid var(--border); background: transparent; color: var(--muted);
+    padding: .4rem .75rem; border-radius: 2px; cursor: pointer; outline: none;
+  }
+  .sort-select:focus { border-color: var(--gold); }
+  .view-toggle { display: flex; gap: .25rem; }
+  .view-btn { padding: .4rem .5rem; border: 1px solid var(--border); background: transparent; cursor: pointer; border-radius: 2px; transition: all .2s; color: var(--muted); }
+  .view-btn.active { background: var(--ink); border-color: var(--ink); color: var(--gold-lt); }
+  .view-btn svg { width: 14px; height: 14px; display: block; fill: currentColor; }
+  @media(max-width:640px) {
+    .filter-right { width: 100%; justify-content: space-between; }
+  }
+
+  /* ── GALLERY MAIN ── */
+  .gallery-main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+  /* Grid view */
+  .art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.75rem;
+  }
+  .art-grid.list-view {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── CARD ── */
+  .art-card {
+    background: var(--cream); border: 1px solid var(--border);
+    border-radius: 3px; overflow: hidden; cursor: pointer;
+    transition: transform .3s, box-shadow .3s;
+    animation: fadeUp .5s ease both;
+  }
+  .art-card.hidden { display: none; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  .art-card:hover { transform: translateY(-6px); box-shadow: 0 18px 45px var(--shadow); }
+
+  .art-card-img {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #3d1800 0%, #7c3a10 50%, #c47a30 100%);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    position: relative;
+  }
+  .art-card.list-view .art-card-img { aspect-ratio: unset; width: 180px; flex-shrink: 0; height: 180px; }
+  .art-card.list-view { display: flex; flex-direction: row; }
+  .art-card.list-view .art-card-body { flex: 1; }
+
+  .art-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+  .art-card:hover .art-card-img img { transform: scale(1.06); }
+  .art-placeholder { opacity: .2; }
+
+  .art-card-overlay {
+    position: absolute; inset: 0; background: rgba(24,8,0,.55);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .3s;
+  }
+  .art-card:hover .art-card-overlay { opacity: 1; }
+  .overlay-icon { width: 44px; height: 44px; border: 1.5px solid rgba(240,192,80,.7); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .overlay-icon svg { width: 20px; height: 20px; fill: none; stroke: var(--gold-lt); stroke-width: 1.5; }
+
+  .art-card-body { padding: 1.2rem 1.4rem 1.5rem; }
+  .art-tag { font-family: 'Cinzel', serif; font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ember); margin-bottom: .45rem; }
+  .art-name { font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: .4rem; line-height: 1.3; }
+  .art-desc { font-size: .9rem; color: var(--muted); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: .9rem; }
+  .art-footer { display: flex; align-items: center; justify-content: space-between; padding-top: .75rem; border-top: 1px solid #ebd9b4; }
+  .art-medium { font-family: 'Cinzel', serif; font-size: .6rem; letter-spacing: .1em; color: #b47a44; }
+  .art-size { font-size: .82rem; color: #b47a44; }
+  .art-arrow { color: var(--gold); font-size: .9rem; transition: transform .2s; }
+  .art-card:hover .art-arrow { transform: translateX(4px); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state { text-align: center; padding: 5rem 1rem; display: none; }
+  .empty-state.visible { display: block; }
+  .empty-state p { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--muted); letter-spacing: .08em; margin-top: .75rem; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(18,6,0,.93);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .3s;
+    padding: 1.5rem;
+  }
+  .lightbox.open { opacity: 1; pointer-events: all; }
+  .lb-inner {
+    max-width: 960px; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+    align-items: center;
+    background: #1e0a00;
+    border: 1px solid rgba(212,149,26,.3);
+    border-radius: 4px;
+    padding: 2.5rem;
+    position: relative;
+    max-height: 90vh; overflow-y: auto;
+  }
+  @media(max-width:700px) { .lb-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem; } }
+  .lb-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: transparent; border: 1px solid rgba(212,149,26,.3);
+    color: var(--gold); font-size: 1.1rem; width: 34px; height: 34px;
+    border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background .2s; font-family: sans-serif; line-height: 1;
+  }
+  .lb-close:hover { background: rgba(212,149,26,.15); }
+  .lb-img-wrap {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #3d1800, #7c3a10, #c47a30);
+    border-radius: 3px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(212,149,26,.2);
+  }
+  .lb-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .lb-info { color: #f0d9b5; }
+  .lb-tag { font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .24em; text-transform: uppercase; color: var(--ember); margin-bottom: .6rem; }
+  .lb-title { font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 500; color: var(--gold-lt); line-height: 1.2; margin-bottom: .5rem; }
+  .lb-divider { width: 50px; height: 1px; background: rgba(212,149,26,.4); margin: .85rem 0; }
+  .lb-desc { font-size: 1rem; line-height: 1.85; color: #c9a96e; font-style: italic; margin-bottom: 1.25rem; }
+  .lb-meta { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem .5rem; margin-bottom: 1.5rem; }
+  .lb-meta-item { }
+  .lb-meta-label { font-family: 'Cinzel', serif; font-size: .58rem; letter-spacing: .18em; text-transform: uppercase; color: #7a4a1e; margin-bottom: .15rem; }
+  .lb-meta-value { font-size: .9rem; color: #d4b896; }
+  .lb-btn {
+    font-family: 'Cinzel', serif; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase;
+    background: var(--gold); color: var(--ink); border: none;
+    padding: .8rem 1.8rem; cursor: pointer; border-radius: 2px;
+    transition: background .2s; font-weight: 500; width: 100%;
+  }
+  .lb-btn:hover { background: var(--gold-lt); }
+  .lb-nav { display: flex; gap: .6rem; margin-top: .75rem; }
+  .lb-nav-btn {
+    flex: 1; font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+    background: transparent; border: 1px solid rgba(212,149,26,.3); color: var(--gold);
+    padding: .55rem; cursor: pointer; border-radius: 2px; transition: border-color .2s, background .2s;
+  }
+  .lb-nav-btn:hover { border-color: var(--gold); background: rgba(212,149,26,.08); }
+
+  /* ── PAGINATION ── */
+  .load-more-wrap { text-align: center; margin-top: 3rem; margin-bottom: 2rem; }
+  .pagination { display: flex; justify-content: center; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 3rem; margin-bottom: 2rem; }
+  .pagination-btn {
+    font-family: 'Cinzel', serif; font-size: .75rem; letter-spacing: .1em;
+    padding: .65rem 1rem; background: transparent; border: 1px solid var(--border);
+    color: var(--muted); cursor: pointer; border-radius: 2px; transition: all .2s;
+  }
+  .pagination-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-pale); }
+  .pagination-btn.active { background: var(--gold); color: var(--ink); border-color: var(--gold); font-weight: 500; }
+  .pagination-btn.disabled { opacity: .4; cursor: not-allowed; }
+  .pagination-btn.disabled:hover { border-color: var(--border); color: var(--muted); background: transparent; }
+  .pagination-info { text-align: center; font-size: .9rem; color: var(--muted); margin-top: 1.5rem; font-style: italic; }
+  .load-more-btn.hidden { display: none; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: linear-gradient(160deg, #130500 0%, #2a0e00 50%, #130500 100%);
+    color: #f0d9b5;
+    font-family: 'EB Garamond', serif;
+    position: relative; overflow: hidden;
+  }
+  .footer-shimmer { height: 4px; background: linear-gradient(90deg, #7c2d12, #d97706, #f59e0b, #d97706, #7c2d12); background-size: 200%; animation: shimmer 4s linear infinite; }
+  @keyframes shimmer { 0% { background-position: 0; } 100% { background-position: 200%; } }
+  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 3.5rem 1.5rem 1.5rem; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3rem; }
+  @media(max-width:768px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.75rem; } }
+  @media(max-width:440px) { .footer-grid { grid-template-columns: 1fr; } }
+  .footer-brand-name { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 500; color: var(--gold); letter-spacing: .1em; margin-bottom: .35rem; }
+  .footer-brand-sub { font-size: .88rem; font-style: italic; color: #b45309; margin-bottom: .9rem; }
+  .footer-desc { font-size: .9rem; line-height: 1.75; color: #c9a96e; max-width: 230px; }
+  .footer-col-title { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); border-bottom: 1px solid #3d1a00; padding-bottom: .5rem; margin-bottom: 1rem; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: .55rem; }
+  .footer-links a { font-size: .9rem; color: #c9a96e; text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--gold-lt); }
+  .footer-social { display: flex; gap: .65rem; flex-wrap: wrap; }
+  .social-btn { display: inline-flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; padding: .35rem .85rem; border: 1px solid #7c3600; border-radius: 2px; color: #c9a96e; text-decoration: none; transition: border-color .2s, color .2s; }
+  .social-btn:hover { border-color: var(--gold); color: var(--gold-lt); }
+  .social-btn svg { width: 13px; height: 13px; fill: currentColor; }
+  .footer-bottom { border-top: 1px solid #2e1200; padding-top: 1.5rem; display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; justify-content: space-between; }
+  .footer-copy { font-size: .78rem; color: #7a4a1e; letter-spacing: .04em; }
+  .footer-tagline { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .12em; color: #7a4a1e; display: flex; align-items: center; gap: 6px; }
+  .footer-tagline svg { width: 18px; height: 18px; animation: spin 14s linear infinite; opacity: .45; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-wheel">☸</span>
+    Thangka Gallery
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html" class="active">Gallery</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#process">Our Craft</a></li>
+    <li><a href="index.html#newsletter">Contact</a></li>
+  </ul>
+  <a href="index.html#newsletter" class="nav-cta">Commission</a>
+</nav>
+
+<!-- ══════════════ HERO BANNER ══════════════ -->
+<header class="gallery-hero">
+  <svg class="hero-mandala-bg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#f59e0b" fill="none" stroke-width="0.6">
+      <circle cx="150" cy="150" r="140"/><circle cx="150" cy="150" r="110"/><circle cx="150" cy="150" r="80"/><circle cx="150" cy="150" r="50"/><circle cx="150" cy="150" r="20"/>
+      <line x1="150" y1="10" x2="150" y2="290"/><line x1="10" y1="150" x2="290" y2="150"/>
+      <line x1="51" y1="51" x2="249" y2="249"/><line x1="249" y1="51" x2="51" y2="249"/>
+      <polygon points="150,20 165,100 245,100 185,148 205,228 150,180 95,228 115,148 55,100 135,100"/>
+    </g>
+  </svg>
+  <p class="gallery-hero-eyebrow">Sacred Collection</p>
+  <h1>The <em>Full Gallery</em></h1>
+  <div class="hero-divider">
+    <div class="hero-divider-line"></div>
+    <div class="hero-divider-diamond"></div>
+    <div class="hero-divider-line"></div>
+  </div>
+  <p>Hand-painted Thangkas by master artists — explore by deity, tradition, or medium</p>
+</header>
+
+<!-- ══════════════ FILTER BAR ══════════════ -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <div class="filter-cats" id="filterCats">
+      <button class="filter-btn active" data-cat="all">All Works</button>
+      <button class="filter-btn" data-cat="compassion">Compassion</button>
+      <button class="filter-btn" data-cat="wisdom">Wisdom</button>
+      <button class="filter-btn" data-cat="protection">Protection</button>
+      <button class="filter-btn" data-cat="enlightenment">Enlightenment</button>
+      <button class="filter-btn" data-cat="abundance">Abundance</button>
+      <button class="filter-btn" data-cat="longevity">Longevity</button>
+      <button class="filter-btn" data-cat="mandala">Mandala</button>
+    </div>
+    <div class="filter-right">
+      <span class="filter-count" id="filterCount">24 works</span>
+      <select class="sort-select" id="sortSelect">
+        <option value="default">Featured</option>
+        <option value="name">Name A–Z</option>
+        <option value="cat">Category</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridViewBtn" title="Grid view">
+          <svg viewBox="0 0 14 14"><rect x="0" y="0" width="6" height="6"/><rect x="8" y="0" width="6" height="6"/><rect x="0" y="8" width="6" height="6"/><rect x="8" y="8" width="6" height="6"/></svg>
+        </button>
+        <button class="view-btn" id="listViewBtn" title="List view">
+          <svg viewBox="0 0 14 14"><rect x="0" y="0" width="14" height="3"/><rect x="0" y="5.5" width="14" height="3"/><rect x="0" y="11" width="14" height="3"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ GALLERY GRID ══════════════ -->
+<main class="gallery-main">
+  <div class="art-grid" id="artGrid">
+    <!-- Cards injected by JS -->
+  </div>
+
+  <div class="empty-state" id="emptyState">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#c9a96e" stroke-width="1.5" style="margin:0 auto;display:block;opacity:.4">
+      <circle cx="24" cy="24" r="20"/><path d="M16 24h16M24 16v16"/>
+    </svg>
+    <p>No works found in this category</p>
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+  <div class="pagination-info" id="paginationInfo"></div>
+</main>
+
+<!-- ══════════════ LIGHTBOX ══════════════ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lb-inner">
+    <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+    <div class="lb-img-wrap" id="lbImg">
+      <svg class="art-placeholder" viewBox="0 0 80 80" fill="none" stroke="#d4951a" stroke-width="1.5" width="70" height="70">
+        <rect x="4" y="4" width="72" height="72" rx="2"/>
+        <circle cx="28" cy="28" r="8"/>
+        <path d="M4 55l18-18 14 14 10-10 20 20"/>
+      </svg>
+    </div>
+    <div class="lb-info">
+      <p class="lb-tag" id="lbTag"></p>
+      <h2 class="lb-title" id="lbTitle"></h2>
+      <div class="lb-divider"></div>
+      <p class="lb-desc" id="lbDesc"></p>
+      <div class="lb-meta" id="lbMeta"></div>
+      <button class="lb-btn">Inquire About This Piece</button>
+      <div class="lb-nav">
+        <button class="lb-nav-btn" id="lbPrev">← Previous</button>
+        <button class="lb-nav-btn" id="lbNext">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-shimmer"></div>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div style="font-size:1.5rem;margin-bottom:.4rem;">☸</div>
+        <div class="footer-brand-name">Himalayan Thangka Art Gallery</div>
+        <div class="footer-brand-sub">Sacred Art of the Himalayas</div>
+        <p class="footer-desc">Celebrating centuries of devotional artistry from Nepal, Tibet & Bhutan — connecting collectors with living tradition.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Explore</p>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+          <li><a href="reviews.html">Collections</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Connect</p>
+        <ul class="footer-links">
+          <li><a href="index.html#newsletter">Get in Touch</a></li>
+          <li><a href="mailto:info@thangka.com">info@thangka.com</a></li>
+          <!-- <li><a href="#">Commission a Piece</a></li> -->
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Follow</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07"/></svg>
+            Facebook
+          </a>
+          <a href="#" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Thangka Gallery. All rights reserved.</p>
+      <div class="footer-tagline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+          <line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/>
+          <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/>
+          <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"/><line x1="9.17" y1="14.83" x2="4.93" y2="19.07"/>
+        </svg>
+        Crafted with devotion · Kathmandu
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const ARTWORKS = [
+  { id:1,  name:"Chenrezig Mandala",        cat:"compassion",   tag:"Compassion",   medium:"Mineral pigment · Gold leaf",  size:"60 × 60 cm", artist:"Karma Wangchuk", origin:"Kathmandu, Nepal",   desc:"The four-armed bodhisattva of compassion radiates from a lotus throne, rendered in luminous mineral pigments with pure gold detailing. Each of his four arms holds sacred implements of compassion — the mani jewel, crystal rosary, lotus, and mudra of blessing.",  svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<circle cx="28" cy="28" r="8"/>` },
+  { id:2,  name:"White Tara",               cat:"wisdom",       tag:"Wisdom",       medium:"Natural dye · 24k gold",       size:"45 × 65 cm", artist:"Pema Dorje",     origin:"Patan, Nepal",       desc:"Goddess of longevity and healing, White Tara is adorned with seven eyes of compassionate sight — one each on her hands, feet, and forehead. Painted during a month-long retreat, the piece carries an unusual stillness.", svgPath:"M10 70c0-16.57 13.43-30 30-30s30 13.43 30 30", svgExtra:`<circle cx="40" cy="30" r="10"/>` },
+  { id:3,  name:"Mahakala Guardian",        cat:"protection",   tag:"Protection",   medium:"Hand-painted · Cotton canvas", size:"55 × 75 cm", artist:"Tenzin Norbu",   origin:"Boudha, Nepal",      desc:"The wrathful six-armed Mahakala, supreme protector of the dharma, stands upon a corpse symbolizing ego-death. His fierce expression and flaming crown convey the energy that destroys all spiritual obstacles.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<polygon points="40,8 52,30 76,34 58,52 62,76 40,64 18,76 22,52 4,34 28,30"/>` },
+  { id:4,  name:"Shakyamuni Buddha",        cat:"enlightenment",tag:"Enlightenment", medium:"Mineral pigment · Silk mount", size:"50 × 70 cm", artist:"Karma Wangchuk", origin:"Kathmandu, Nepal",   desc:"The historical Buddha in earth-touching posture (bhumisparsha mudra), the moment of enlightenment under the Bodhi tree. Painted during a 10-day meditation retreat, this piece carries extraordinary serenity.", svgPath:"", svgExtra:`<circle cx="40" cy="40" r="36"/><circle cx="40" cy="40" r="24"/><circle cx="40" cy="40" r="12"/><line x1="40" y1="4" x2="40" y2="76"/><line x1="4" y1="40" x2="76" y2="40"/>` },
+  { id:5,  name:"Green Tara",               cat:"abundance",    tag:"Abundance",    medium:"Stone pigment · Brocade border",size:"40 × 60 cm", artist:"Sonam Lhakpa",   origin:"Patan, Nepal",       desc:"The active mother of liberation, swift to respond to all calls for help. Green Tara's right foot steps forward in readiness, her left hand at her heart in the gesture of granting refuge. Vivid malachite tones dominate.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<path d="M40 8 C20 20 8 34 8 50 C8 66 22 76 40 76 C58 76 72 66 72 50 C72 34 60 20 40 8Z"/><circle cx="40" cy="44" r="10"/>` },
+  { id:6,  name:"Amitayus — Life Buddha",   cat:"longevity",    tag:"Longevity",    medium:"24k gold detail · Mineral pigment",size:"50 × 70 cm", artist:"Pema Dorje",  origin:"Boudha, Nepal",      desc:"The Buddha of Boundless Life holds a vase of immortality nectar upon his lap, glowing in deep red and gold. Amitayus is invoked in longevity practices and as protection against untimely death.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<rect x="16" y="4" width="48" height="56" rx="2"/><rect x="24" y="64" width="32" height="12" rx="2"/>` },
+  { id:7,  name:"Kalachakra Mandala",       cat:"mandala",      tag:"Mandala",      medium:"Mineral pigment · 24k gold",   size:"80 × 80 cm", artist:"Tenzin Norbu",   origin:"Boudha, Nepal",      desc:"The Kalachakra, or Wheel of Time mandala, is among the most complex in Vajrayana Buddhism. This extraordinary work took four months to complete and contains over 700 deities within its concentric palace.", svgPath:"", svgExtra:`<circle cx="40" cy="40" r="36"/><circle cx="40" cy="40" r="26"/><circle cx="40" cy="40" r="16"/><polygon points="40,10 48,36 74,36 52,52 60,78 40,62 20,78 28,52 6,36 32,36"/>` },
+  { id:8,  name:"Medicine Buddha",          cat:"wisdom",       tag:"Wisdom",       medium:"Lapis lazuli pigment · Gold",  size:"45 × 65 cm", artist:"Sonam Lhakpa",   origin:"Kathmandu, Nepal",   desc:"Sangye Menla, the Medicine Buddha, radiates deep lapis lazuli blue. His right hand holds the Arura plant, his left a lapis bowl of healing nectar. This painting is used in healing practices and medical rituals.", svgPath:"M10 70c0-16.57 13.43-30 30-30s30 13.43 30 30", svgExtra:`<circle cx="40" cy="30" r="10"/><line x1="28" y1="55" x2="52" y2="55"/>` },
+  { id:9,  name:"Guru Rinpoche",            cat:"protection",   tag:"Protection",   medium:"Hand-painted · Cotton canvas", size:"55 × 75 cm", artist:"Karma Wangchuk", origin:"Patan, Nepal",       desc:"Padmasambhava, Guru Rinpoche, the Lotus-Born master who brought Buddhism to Tibet, depicted in his classic form with thunderbolt sceptre, skull cup, and khatvanga staff. A powerfully protective image.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<circle cx="40" cy="25" r="12"/><rect x="28" y="38" width="24" height="32" rx="2"/>` },
+  { id:10, name:"Vajrasattva",              cat:"enlightenment",tag:"Enlightenment", medium:"Silver & gold · Mineral pigment",size:"45 × 65 cm", artist:"Pema Dorje",   origin:"Boudha, Nepal",      desc:"The pure white bodhisattva Vajrasattva holds the golden vajra at his heart and silver bell at his hip — symbols of wisdom and compassion in union. Central to purification practice in Tibetan Buddhism.", svgPath:"", svgExtra:`<circle cx="40" cy="40" r="30"/><circle cx="40" cy="40" r="16"/><circle cx="40" cy="40" r="5"/>` },
+  { id:11, name:"Amitabha Buddha",          cat:"enlightenment",tag:"Enlightenment", medium:"Cinnabar red · Gold leaf",     size:"50 × 70 cm", artist:"Tenzin Norbu",   origin:"Kathmandu, Nepal",   desc:"The Buddha of Boundless Light, Amitabha, sits in meditation posture in his pure land of Sukhavati. Painted in deep cinnabar red with the lotus of rebirth, this work evokes the western realm of bliss.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<circle cx="40" cy="30" r="12"/><path d="M20 72 Q40 50 60 72"/>` },
+  { id:12, name:"Tara Mandala — 21 Forms",  cat:"mandala",      tag:"Mandala",      medium:"Stone pigment · Gold filigree", size:"90 × 90 cm", artist:"Sonam Lhakpa",   origin:"Patan, Nepal",       desc:"All twenty-one emanations of Tara arranged within an intricate mandala structure. Each form corresponds to a specific prayer in the 21 Praises of Tara. Six months in the making — a true devotional masterwork.", svgPath:"", svgExtra:`<circle cx="40" cy="40" r="36"/><circle cx="40" cy="40" r="22"/><polygon points="40,18 46,34 64,34 50,44 56,60 40,50 24,60 30,44 16,34 34,34"/>` },
+  { id:13, name:"Kubera — God of Wealth",   cat:"abundance",    tag:"Abundance",    medium:"Natural dye · 24k gold",       size:"40 × 55 cm", artist:"Karma Wangchuk", origin:"Kathmandu, Nepal",   desc:"Kubera, the Himalayan deity of wealth and prosperity, holds a mongoose spitting jewels. His golden body glows against a lapis sky. Traditionally placed in businesses and homes to invite abundance.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<rect x="16" y="10" width="48" height="60" rx="2"/><circle cx="40" cy="30" r="10"/>` },
+  { id:14, name:"Ushnishavijaya",           cat:"longevity",    tag:"Longevity",    medium:"Mineral pigment · Silk mount", size:"50 × 70 cm", artist:"Pema Dorje",     origin:"Boudha, Nepal",      desc:"The Victorious Crown Protrusion, a Buddhist goddess associated with the removal of negative karma and granting of long life. Painted with a thousand-petal lotus crown and triple-bodied form rarely depicted.", svgPath:"M10 70c0-16.57 13.43-30 30-30s30 13.43 30 30", svgExtra:`<circle cx="40" cy="28" r="12"/><polygon points="40,8 48,22 64,22 52,32 56,48 40,38 24,48 28,32 16,22 32,22"/>` },
+  { id:15, name:"Wheel of Life",            cat:"mandala",      tag:"Mandala",      medium:"Mineral pigment · Hand-spun silk",size:"75 × 75 cm", artist:"Tenzin Norbu", origin:"Boudha, Nepal",      desc:"The Bhavachakra — the Wheel of Existence held by Yama, the Lord of Death. All six realms of existence radiate from the hub of ignorance, desire, and aversion. A teaching tool and profound meditation support.", svgPath:"", svgExtra:`<circle cx="40" cy="40" r="36"/><circle cx="40" cy="40" r="28"/><circle cx="40" cy="40" r="10"/><line x1="40" y1="12" x2="40" y2="30"/><line x1="40" y1="50" x2="40" y2="68"/>` },
+  { id:16, name:"Milarepa",                 cat:"enlightenment",tag:"Enlightenment", medium:"Stone pigment · Cotton canvas",size:"40 × 60 cm", artist:"Sonam Lhakpa",   origin:"Patan, Nepal",       desc:"The great Tibetan poet-saint Milarepa is depicted in his characteristic pose, hand cupped to ear as he sings. Dressed in white cotton, his body tinged green from nettle soup, he embodies pure renunciation.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<circle cx="40" cy="22" r="10"/><path d="M24 70 L28 40 Q40 34 52 40 L56 70"/>` },
+  { id:17, name:"Vajrayogini",              cat:"wisdom",       tag:"Wisdom",       medium:"Cinnabar · 24k gold detail",   size:"50 × 75 cm", artist:"Karma Wangchuk", origin:"Kathmandu, Nepal",   desc:"The fierce red dakini Vajrayogini, naked and adorned with bone ornaments, dances in the posture of liberation. She holds a skull cup of bliss and a curved knife that cuts through conceptual mind.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<ellipse cx="40" cy="30" rx="12" ry="15"/><path d="M30 45 Q20 60 28 72 Q40 78 52 72 Q60 60 50 45"/>` },
+  { id:18, name:"Dorje Sempa Purification", cat:"compassion",   tag:"Compassion",   medium:"Silver & gold · Mineral pigment",size:"45 × 65 cm", artist:"Pema Dorje",    origin:"Boudha, Nepal",      desc:"A rare iconographic depiction of Vajrasattva's purification empowerment, with nectar flowing from the crown of the meditator. Commissioned by a dharma centre for group practice, now available for private collection.", svgPath:"", svgExtra:`<circle cx="40" cy="20" r="12"/><path d="M28 32 L20 60 L40 50 L60 60 L52 32"/><path d="M40 50 L40 72"/>` },
+  { id:19, name:"Avalokiteshvara — 1000 Arms", cat:"compassion",tag:"Compassion",   medium:"Mineral pigment · Gold leaf",  size:"70 × 90 cm", artist:"Tenzin Norbu",   origin:"Patan, Nepal",       desc:"The thousand-armed emanation of Chenrezig encompasses all directions of space with compassionate action. Each hand holds a sacred implement. The central face bears eleven heads depicting all the realms of samsara.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<circle cx="40" cy="25" r="10"/><line x1="10" y1="50" x2="70" y2="50"/><line x1="15" y1="38" x2="65" y2="62"/><line x1="65" y1="38" x2="15" y2="62"/>` },
+  { id:20, name:"Saraswati — Goddess of Arts", cat:"wisdom",    tag:"Wisdom",       medium:"Lapis & malachite · Gold",     size:"45 × 65 cm", artist:"Sonam Lhakpa",   origin:"Kathmandu, Nepal",   desc:"The Hindu-Buddhist goddess of art, music, and learning plays her vina upon a lotus throne. Dressed in flowing white silk with peacock feathers, this is a favourite among artists and musicians.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<circle cx="40" cy="22" r="10"/><rect x="24" y="35" width="32" height="8" rx="2"/><path d="M24 43 Q40 58 56 43"/>` },
+  { id:21, name:"Palden Lhamo",             cat:"protection",   tag:"Protection",   medium:"Stone pigment · Brocade",      size:"55 × 75 cm", artist:"Karma Wangchuk", origin:"Boudha, Nepal",      desc:"The fierce protector goddess Palden Lhamo rides her mule across a sea of blood, protecting all devotees. One of the few female dharma protectors, this rare image is used in protector ceremonies.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<ellipse cx="40" cy="40" rx="30" ry="22"/><polygon points="40,6 48,28 72,28 52,44 60,68 40,52 20,68 28,44 8,28 32,28"/>` },
+  { id:22, name:"Simhamukha Dakini",        cat:"protection",   tag:"Protection",   medium:"Mineral pigment · Gold",       size:"50 × 70 cm", artist:"Pema Dorje",     origin:"Patan, Nepal",       desc:"The lion-faced dakini Simhamukha, a powerful aspect of Vajravarahi, leaps with terrifying joy. Her smoke-blue body and lion head are surrounded by flames of primordial wisdom. Rare and extraordinarily powerful.", svgPath:"M4 55l18-18 14 14 10-10 20 20", svgExtra:`<path d="M30 10 Q25 18 20 18 Q16 22 18 28 Q22 34 40 30 Q58 34 62 28 Q64 22 60 18 Q55 18 50 10 Q40 20 30 10Z"/>` },
+  { id:23, name:"Longlife Mandala",         cat:"longevity",    tag:"Longevity",    medium:"24k gold · Mineral pigment",   size:"65 × 65 cm", artist:"Tenzin Norbu",   origin:"Kathmandu, Nepal",   desc:"The three longevity deities — Amitayus, White Tara, and Ushnishavijaya — are enshrined within a lotus mandala of pure gold. This mandala is traditionally offered for teachers' long lives and recovery from illness.", svgPath:"", svgExtra:`<circle cx="40" cy="40" r="34"/><circle cx="40" cy="40" r="20"/><circle cx="40" cy="20" r="7"/><circle cx="58" cy="52" r="7"/><circle cx="22" cy="52" r="7"/>` },
+  { id:24, name:"Five Dhyani Buddhas",      cat:"mandala",      tag:"Mandala",      medium:"Stone pigment · Gold filigree",size:"80 × 80 cm", artist:"Sonam Lhakpa",   origin:"Patan, Nepal",       desc:"The five transcendent buddhas of the Vajrayana tradition — Vairochana, Akshobhya, Ratnasambhava, Amitabha, and Amoghasiddhi — arranged in a mandala of the five wisdoms. A rare composition of supreme refinement.", svgPath:"", svgExtra:`<circle cx="40" cy="40" r="32"/><circle cx="40" cy="18" r="8"/><circle cx="62" cy="52" r="8"/><circle cx="18" cy="52" r="8"/><circle cx="30" cy="62" r="8"/><circle cx="50" cy="62" r="8"/>` },
+];
+
+const BATCH = 12;
+let currentPage = 1;
+let totalPages = 1;
+let currentFilter = 'all';
+let currentView = 'grid';
+let activeLbIndex = 0;
+let filteredList = [...ARTWORKS];
+
+function makeSvgPlaceholder(art) {
+  return `<svg class="art-placeholder" viewBox="0 0 80 80" fill="none" stroke="#d4951a" stroke-width="1.5" width="64" height="64">
+    <rect x="4" y="4" width="72" height="72" rx="2"/>
+    ${art.svgExtra || ''}
+    ${art.svgPath ? `<path d="${art.svgPath}"/>` : ''}
+  </svg>`;
+}
+
+function renderCards() {
+  const grid = document.getElementById('artGrid');
+  const empty = document.getElementById('emptyState');
+  
+  // Calculate pagination
+  totalPages = Math.ceil(filteredList.length / BATCH);
+  if (currentPage > totalPages) currentPage = totalPages || 1;
+  
+  const startIdx = (currentPage - 1) * BATCH;
+  const endIdx = startIdx + BATCH;
+  const toShow = filteredList.slice(startIdx, endIdx);
+  
+  grid.innerHTML = '';
+
+  if (filteredList.length === 0) {
+    empty.classList.add('visible');
+    renderPagination();
+    return;
+  }
+  empty.classList.remove('visible');
+
+  toShow.forEach((art, i) => {
+    const card = document.createElement('div');
+    card.className = 'art-card' + (currentView === 'list' ? ' list-view' : '');
+    card.style.animationDelay = `${(i % BATCH) * 0.045}s`;
+    card.dataset.id = art.id;
+    card.innerHTML = `
+      <div class="art-card-img">
+        ${makeSvgPlaceholder(art)}
+        <div class="art-card-overlay">
+          <div class="overlay-icon">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="art-card-body">
+        <p class="art-tag">${art.tag}</p>
+        <h3 class="art-name">${art.name}</h3>
+        <p class="art-desc">${art.desc}</p>
+        <div class="art-footer">
+          <span class="art-medium">${art.medium}</span>
+          <span class="art-arrow">→</span>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => openLightbox(filteredList.indexOf(art)));
+    grid.appendChild(card);
+  });
+
+  renderPagination();
+  document.getElementById('filterCount').textContent = filteredList.length + ' work' + (filteredList.length !== 1 ? 's' : '');
+}
+
+function renderPagination() {
+  const paginationEl = document.getElementById('pagination');
+  const infoEl = document.getElementById('paginationInfo');
+  paginationEl.innerHTML = '';
+  
+  if (totalPages <= 1) {
+    infoEl.innerHTML = '';
+    return;
+  }
+  
+  // Previous button
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'pagination-btn' + (currentPage === 1 ? ' disabled' : '');
+  prevBtn.innerHTML = '← Previous';
+  prevBtn.onclick = () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderCards();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+  paginationEl.appendChild(prevBtn);
+  
+  // Page numbers
+  for (let i = 1; i <= totalPages; i++) {
+    const pageBtn = document.createElement('button');
+    pageBtn.className = 'pagination-btn' + (i === currentPage ? ' active' : '');
+    pageBtn.textContent = i;
+    pageBtn.onclick = () => {
+      currentPage = i;
+      renderCards();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    paginationEl.appendChild(pageBtn);
+  }
+  
+  // Next button
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'pagination-btn' + (currentPage === totalPages ? ' disabled' : '');
+  nextBtn.innerHTML = 'Next →';
+  nextBtn.onclick = () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderCards();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+  paginationEl.appendChild(nextBtn);
+  
+  // Info text
+  const startIdx = (currentPage - 1) * BATCH + 1;
+  const endIdx = Math.min(currentPage * BATCH, filteredList.length);
+  infoEl.innerHTML = `Showing ${startIdx}–${endIdx} of ${filteredList.length} works · Page ${currentPage} of ${totalPages}`;
+}
+
+// Filter
+document.getElementById('filterCats').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.cat;
+  currentPage = 1;  // Reset to page 1 when filtering
+  applyFilterSort();
+});
+
+// Sort
+document.getElementById('sortSelect').addEventListener('change', e => {
+  currentPage = 1;  // Reset to page 1 when sorting
+  applyFilterSort();
+});
+
+function applyFilterSort() {
+  const sort = document.getElementById('sortSelect').value;
+  filteredList = currentFilter === 'all'
+    ? [...ARTWORKS]
+    : ARTWORKS.filter(a => a.cat === currentFilter);
+  if (sort === 'name') filteredList.sort((a, b) => a.name.localeCompare(b.name));
+  else if (sort === 'cat') filteredList.sort((a, b) => a.cat.localeCompare(b.cat));
+  renderCards();
+}
+
+// View toggle
+document.getElementById('gridViewBtn').addEventListener('click', () => {
+  currentView = 'grid';
+  document.getElementById('gridViewBtn').classList.add('active');
+  document.getElementById('listViewBtn').classList.remove('active');
+  document.getElementById('artGrid').classList.remove('list-view');
+  renderCards();
+});
+document.getElementById('listViewBtn').addEventListener('click', () => {
+  currentView = 'list';
+  document.getElementById('listViewBtn').classList.add('active');
+  document.getElementById('gridViewBtn').classList.remove('active');
+  document.getElementById('artGrid').classList.add('list-view');
+  renderCards();
+});
+
+// Load more - REMOVED, using pagination instead
+// document.getElementById('loadMoreBtn').addEventListener('click', ...
+
+// Lightbox
+function openLightbox(index) {
+  activeLbIndex = index;
+  const art = filteredList[index];
+  document.getElementById('lbTag').textContent = art.tag;
+  document.getElementById('lbTitle').textContent = art.name;
+  document.getElementById('lbDesc').textContent = art.desc;
+  document.getElementById('lbImg').innerHTML = makeSvgPlaceholder(art);
+  document.getElementById('lbMeta').innerHTML = `
+    <div class="lb-meta-item"><div class="lb-meta-label">Medium</div><div class="lb-meta-value">${art.medium}</div></div>
+    <div class="lb-meta-item"><div class="lb-meta-label">Size</div><div class="lb-meta-value">${art.size}</div></div>
+    <div class="lb-meta-item"><div class="lb-meta-label">Artist</div><div class="lb-meta-value">${art.artist}</div></div>
+    <div class="lb-meta-item"><div class="lb-meta-label">Origin</div><div class="lb-meta-value">${art.origin}</div></div>
+  `;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+});
+document.getElementById('lbPrev').addEventListener('click', () => {
+  activeLbIndex = (activeLbIndex - 1 + filteredList.length) % filteredList.length;
+  openLightbox(activeLbIndex);
+});
+document.getElementById('lbNext').addEventListener('click', () => {
+  activeLbIndex = (activeLbIndex + 1) % filteredList.length;
+  openLightbox(activeLbIndex);
+});
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') document.getElementById('lbPrev').click();
+  if (e.key === 'ArrowRight') document.getElementById('lbNext').click();
+});
+
+// Init
+renderCards();
+</script>
+</body>
+</html>

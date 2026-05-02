@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>All Reviews — Himalayan Thangka Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold:      #d4951a;
+    --gold-lt:   #f0c050;
+    --gold-pale: #fdf3dc;
+    --ember:     #b84a0c;
+    --ember-dk:  #7c2d0a;
+    --ink:       #180800;
+    --parchment: #faf5ec;
+    --parchment2:#f3ead8;
+    --cream:     #fffdf7;
+    --muted:     #7a5230;
+    --border:    #e2c98a;
+    --shadow:    rgba(100,40,0,.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--parchment); color: var(--ink); font-family: 'EB Garamond', serif; overflow-x: hidden; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--parchment2); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+  .cinzel { font-family: 'Cinzel', serif; }
+  .section-eyebrow { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .28em; text-transform: uppercase; color: var(--ember); margin-bottom: .6rem; }
+  .divider { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 1rem 0; }
+  .divider-line { width: 50px; height: 1px; background: var(--gold); }
+  .divider-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .9rem 2.5rem;
+    background: rgba(24,8,0,.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(212,149,26,.25);
+  }
+  .nav-logo { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 500; color: var(--gold-lt); letter-spacing: .12em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .nav-logo .wheel { font-size: 1rem; animation: spin 14s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-family: 'Cinzel', serif; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: #d4b896; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--gold-lt); }
+  .nav-cta { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--gold); border: none; padding: .5rem 1.3rem; cursor: pointer; border-radius: 2px; transition: background .2s; text-decoration: none; }
+  .nav-cta:hover { background: var(--gold-lt); }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .nav-hamburger span { width: 22px; height: 1.5px; background: var(--gold-lt); display: block; transition: .3s; }
+  @media(max-width:768px) {
+    nav { padding: .9rem 1.25rem; }
+    .nav-links, .nav-cta { display: none; }
+    .nav-hamburger { display: flex; }
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 60vh;
+    background: linear-gradient(160deg, rgba(24,8,0,.72) 0%, rgba(124,45,10,.55) 45%, rgba(180,100,10,.35) 75%, rgba(212,149,26,.2) 100%), radial-gradient(ellipse at 70% 50%, #4a1e08 0%, #1a0800 60%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 7rem 1.5rem 3rem;
+    position: relative;
+  }
+  .hero-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 500; color: #fff; line-height: 1.1; margin-bottom: 1rem; }
+  .hero-title em { color: var(--gold-lt); font-style: normal; }
+  .hero-sub { font-size: 1.05rem; color: #d4b896; font-style: italic; max-width: 520px; line-height: 1.75; }
+
+  /* CONTENT */
+  .page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+
+  .section-head { text-align: center; margin-bottom: 3.5rem; }
+  .section-head h2 { font-family: 'Cinzel', serif; font-size: 2.5rem; font-weight: 500; color: var(--ink); margin-bottom: .5rem; }
+  .section-head p { font-size: 1.05rem; font-style: italic; color: var(--muted); max-width: 600px; margin: .75rem auto 0; }
+
+  .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem; }
+  @media(max-width:1000px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media(max-width:600px) { .reviews-grid { grid-template-columns: 1fr; } }
+
+  .review-card { 
+    background: var(--cream); 
+    border: 1px solid var(--border); 
+    border-radius: 3px; 
+    padding: 2rem;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .review-card:hover { 
+    transform: translateY(-8px); 
+    box-shadow: 0 20px 50px var(--shadow);
+  }
+
+  .review-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .stars { 
+    color: var(--gold); 
+    font-size: 1rem; 
+    letter-spacing: 3px; 
+  }
+
+  .review-location {
+    font-family: 'Cinzel', serif;
+    font-size: .65rem;
+    letter-spacing: .12em;
+    color: var(--ember);
+    text-transform: uppercase;
+  }
+
+  .testimonial-body { 
+    font-size: 1rem; 
+    line-height: 1.8; 
+    color: var(--muted); 
+    font-style: italic; 
+    margin-bottom: 1.5rem;
+  }
+
+  .review-footer {
+    border-top: 1px solid #ebd9b4;
+    padding-top: 1rem;
+  }
+
+  .testimonial-author { 
+    font-family: 'Cinzel', serif; 
+    font-size: .85rem; 
+    letter-spacing: .12em; 
+    color: var(--ink); 
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .testimonial-origin { 
+    font-size: .9rem; 
+    color: #b47a44; 
+    margin-top: .3rem;
+  }
+
+  .review-count {
+    font-family: 'Cinzel', serif;
+    font-size: .75rem;
+    letter-spacing: .1em;
+    color: #b47a44;
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  /* PAGINATION */
+  .pagination { display: flex; justify-content: center; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 3rem; margin-bottom: 2rem; }
+  .pagination-btn {
+    font-family: 'Cinzel', serif; font-size: .75rem; letter-spacing: .1em;
+    padding: .65rem 1rem; background: transparent; border: 1px solid var(--border);
+    color: var(--muted); cursor: pointer; border-radius: 2px; transition: all .2s;
+  }
+  .pagination-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-pale); }
+  .pagination-btn.active { background: var(--gold); color: var(--ink); border-color: var(--gold); font-weight: 500; }
+  .pagination-btn.disabled { opacity: .4; cursor: not-allowed; }
+  .pagination-btn.disabled:hover { border-color: var(--border); color: var(--muted); background: transparent; }
+  .pagination-info { text-align: center; font-size: .9rem; color: var(--muted); margin-top: 1.5rem; font-style: italic; }
+
+  /* FOOTER */
+  footer {
+    background: linear-gradient(160deg, #130500 0%, #2a0e00 50%, #130500 100%);
+    color: #f0d9b5;
+    font-family: 'EB Garamond', serif;
+    position: relative; overflow: hidden;
+  }
+  .footer-shimmer { height: 4px; background: linear-gradient(90deg, #7c2d12, #d97706, #f59e0b, #d97706, #7c2d12); background-size: 200%; animation: shimmer 4s linear infinite; }
+  @keyframes shimmer { 0% { background-position: 0; } 100% { background-position: 200%; } }
+  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 3.5rem 1.5rem 1.5rem; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3rem; }
+  @media(max-width:768px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.75rem; } }
+  @media(max-width:440px) { .footer-grid { grid-template-columns: 1fr; } }
+  .footer-brand-name { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 500; color: var(--gold); letter-spacing: .1em; margin-bottom: .35rem; }
+  .footer-brand-sub { font-size: .88rem; font-style: italic; color: #b45309; margin-bottom: .9rem; }
+  .footer-desc { font-size: .9rem; line-height: 1.75; color: #c9a96e; max-width: 230px; }
+  .footer-col-title { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); border-bottom: 1px solid #3d1a00; padding-bottom: .5rem; margin-bottom: 1rem; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: .55rem; }
+  .footer-links a { font-size: .9rem; color: #c9a96e; text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--gold-lt); }
+  .footer-social { display: flex; gap: .65rem; flex-wrap: wrap; }
+  .social-btn { display: inline-flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; padding: .35rem .85rem; border: 1px solid #7c3600; border-radius: 2px; color: #c9a96e; text-decoration: none; transition: border-color .2s, color .2s; }
+  .social-btn:hover { border-color: var(--gold); color: var(--gold-lt); }
+  .social-btn svg { width: 13px; height: 13px; fill: currentColor; }
+  .footer-bottom { border-top: 1px solid #2e1200; padding-top: 1.5rem; display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; justify-content: space-between; }
+  .footer-copy { font-size: .78rem; color: #7a4a1e; letter-spacing: .04em; }
+  .footer-tagline { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .12em; color: #7a4a1e; display: flex; align-items: center; gap: 6px; }
+  .footer-tagline svg { width: 18px; height: 18px; animation: spin 14s linear infinite; opacity: .45; }
+
+  .back-link { display: inline-block; margin-bottom: 2rem; }
+  .back-link a { font-family: 'Cinzel', serif; font-size: .8rem; letter-spacing: .1em; color: var(--gold); text-decoration: none; transition: color .2s; }
+  .back-link a:hover { color: var(--gold-lt); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="wheel">☸</span>
+    Himalayan Thangka Art Gallery
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="index.html#process">Our Craft</a></li>
+    <li><a href="reviews.html">Reviews</a></li>
+    <li><a href="index.html#newsletter">Contact</a></li>
+  </ul>
+  <a href="gallery.html" class="nav-cta">Explore Art</a>
+  <div class="nav-hamburger" onclick="this.classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-title">
+    Collectors' <em>Voices</em>
+  </div>
+  <p class="hero-sub">Read what sacred art seekers around the world have to say about their Thangka journey</p>
+</section>
+
+<!-- CONTENT -->
+<div class="page-content">
+  <div class="back-link">
+    <a href="index.html">← Back to Home</a>
+  </div>
+
+  <div class="section-head">
+    <p class="section-eyebrow">Testimonials</p>
+    <h2>All Reviews</h2>
+    <div class="divider"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+    <p>Explore the complete collection of reviews from art collectors and spiritual seekers</p>
+  </div>
+
+  <div class="reviews-grid" id="reviewsGrid">
+    <!-- Reviews injected by JavaScript -->
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+  <div class="pagination-info" id="paginationInfo"></div>
+
+  <div class="review-count">
+    ★ 9 Verified Reviews ★
+  </div>
+</div>
+
+<footer>
+  <div class="footer-shimmer"></div>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div style="font-size:1.5rem;margin-bottom:.4rem;">☸</div>
+        <div class="footer-brand-name">Himalayan Thangka Art Gallery</div>
+        <div class="footer-brand-sub">Sacred Art of the Himalayas</div>
+        <p class="footer-desc">Celebrating centuries of devotional artistry from Nepal, Tibet & Bhutan — connecting collectors with living tradition.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Explore</p>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+          <li><a href="reviews.html">Collections</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Connect</p>
+        <ul class="footer-links">
+          <li><a href="index.html#newsletter">Get in Touch</a></li>
+          <li><a href="mailto:info@thangka.com">info@thangka.com</a></li>
+          <!-- <li><a href="#">Commission a Piece</a></li> -->
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Follow</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07"/></svg>
+            Facebook
+          </a>
+          <a href="#" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Thangka Gallery. All rights reserved.</p>
+      <div class="footer-tagline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+          <line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/>
+          <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/>
+          <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"/><line x1="9.17" y1="14.83" x2="4.93" y2="19.07"/>
+        </svg>
+        Crafted with devotion · Kathmandu
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const BATCH = 6;
+  let currentPage = 1;
+  let totalPages = 1;
+  
+  const reviews = [
+    {
+      location: 'London',
+      text: 'I have collected art for 30 years and never felt such a presence radiating from a painting. My White Tara Thangka transforms the entire room.',
+      author: 'Margaret L.',
+      origin: 'United Kingdom'
+    },
+    {
+      location: 'Kyoto',
+      text: 'The craftsmanship is extraordinary — every detail tells a story. The packaging and documentation of the artist\'s lineage made it feel truly sacred.',
+      author: 'Kenji M.',
+      origin: 'Japan'
+    },
+    {
+      location: 'New York',
+      text: 'Our sangha commissioned a large Chenrezig and the result moved everyone to tears. The artists truly paint from the heart, not just the hand.',
+      author: 'Sonia R.',
+      origin: 'USA'
+    },
+    {
+      location: 'Sydney',
+      text: 'The piece arrived beautifully packaged and the care taken was evident. I felt a deep spiritual connection the moment I opened it. Simply transcendent.',
+      author: 'David W.',
+      origin: 'Australia'
+    },
+    {
+      location: 'New Delhi',
+      text: 'A gift that truly gives. Each time I meditate before my Chenrezig, I discover new layers of meaning in the brushwork. Remarkable investment.',
+      author: 'Priya S.',
+      origin: 'India'
+    },
+    {
+      location: 'Barcelona',
+      text: 'The artist\'s dedication is palpable in every stroke. This is not mass production—it\'s a living tradition passed down through centuries.',
+      author: 'Elena M.',
+      origin: 'Spain'
+    },
+    {
+      location: 'Toronto',
+      text: 'My Mahakala Guardian watches over my home with fierce compassion. The energy in the room shifted immediately after hanging it.',
+      author: 'James T.',
+      origin: 'Canada'
+    },
+    {
+      location: 'Mexico City',
+      text: 'I purchased the Green Tara and my practice deepened. The colors are so vibrant—they seem to glow from within. Worth every penny.',
+      author: 'Lucia R.',
+      origin: 'Mexico'
+    },
+    {
+      location: 'Boston',
+      text: 'The documentation accompanying each piece is scholarly and reverent. You\'re not just buying art, you\'re supporting a sacred lineage.',
+      author: 'Robert H.',
+      origin: 'USA'
+    }
+  ];
+
+  function renderReviews() {
+    const grid = document.getElementById('reviewsGrid');
+    
+    // Calculate pagination
+    totalPages = Math.ceil(reviews.length / BATCH);
+    if (currentPage > totalPages) currentPage = totalPages || 1;
+    
+    const startIdx = (currentPage - 1) * BATCH;
+    const endIdx = startIdx + BATCH;
+    const toShow = reviews.slice(startIdx, endIdx);
+    
+    grid.innerHTML = '';
+
+    toShow.forEach((review, i) => {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      card.style.animationDelay = `${i * 0.045}s`;
+      card.innerHTML = `
+        <div class="review-header">
+          <div class="stars">★★★★★</div>
+          <div class="review-location">${review.location}</div>
+        </div>
+        <p class="testimonial-body">${review.text}</p>
+        <div class="review-footer">
+          <div class="testimonial-author">${review.author}</div>
+          <div class="testimonial-origin">${review.origin}</div>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    renderPagination();
+  }
+
+  function renderPagination() {
+    const paginationEl = document.getElementById('pagination');
+    const infoEl = document.getElementById('paginationInfo');
+    paginationEl.innerHTML = '';
+    
+    if (totalPages <= 1) {
+      infoEl.innerHTML = '';
+      return;
+    }
+    
+    // Previous button
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'pagination-btn' + (currentPage === 1 ? ' disabled' : '');
+    prevBtn.innerHTML = '← Previous';
+    prevBtn.onclick = () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderReviews();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    paginationEl.appendChild(prevBtn);
+    
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+      const pageBtn = document.createElement('button');
+      pageBtn.className = 'pagination-btn' + (i === currentPage ? ' active' : '');
+      pageBtn.textContent = i;
+      pageBtn.onclick = () => {
+        currentPage = i;
+        renderReviews();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+      paginationEl.appendChild(pageBtn);
+    }
+    
+    // Next button
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'pagination-btn' + (currentPage === totalPages ? ' disabled' : '');
+    nextBtn.innerHTML = 'Next →';
+    nextBtn.onclick = () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderReviews();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    paginationEl.appendChild(nextBtn);
+    
+    // Info text
+    const startIdx = (currentPage - 1) * BATCH + 1;
+    const endIdx = Math.min(currentPage * BATCH, reviews.length);
+    infoEl.innerHTML = `Showing ${startIdx}–${endIdx} of ${reviews.length} reviews · Page ${currentPage} of ${totalPages}`;
+  }
+
+  // Initialize
+  renderReviews();
+</script>
+
+</body>
+</html>
