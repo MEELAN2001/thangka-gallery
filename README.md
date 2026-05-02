@@ -157,27 +157,6 @@ git commit -m "Add project screenshots to documentation"
 git push origin main
 ```
 
-### Step 4: Reference in README
-
-In your README.md, add:
-```markdown
-## 📸 Screenshots
-
-### Homepage
-![Homepage Hero](./screenshots/homepage-hero.png)
-
-### Gallery
-![Gallery with Pagination](./screenshots/gallery-pagination.png)
-
-### Reviews Page
-![Reviews Page](./screenshots/reviews-page.png)
-
-### FAQ
-![FAQ Accordion](./screenshots/faq-accordion.png)
-```
-
----
-
 ## 📊 Artworks Database
 
 24 authentic Thangka artworks with:
